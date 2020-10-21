@@ -23,7 +23,7 @@ public class TaskDTO implements Serializable {
 	private Integer id;
 
 	@NotBlank(message = "task.title.empty")
-	@Size(min = 5, max = 10, message = "task.title.size")
+	@Size(min = 5, max = 100, message = "task.title.size")
 	@JsonProperty("title")
 	private String title;
 
