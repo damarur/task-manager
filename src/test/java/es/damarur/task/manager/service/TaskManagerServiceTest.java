@@ -41,14 +41,13 @@ import es.damarur.task.manager.repository.TaskEntityRepository;
 public class TaskManagerServiceTest {
 
 	private static final String TASK_TITLE_TEST = "task";
+	private TaskEntity mockedTask;
 
 	@Mock
 	private TaskEntityRepository taskEntityRepository;
 
 	@InjectMocks
 	private TaskManagerServiceImpl taskManagerService;
-
-	private TaskEntity mockedTask;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Before
