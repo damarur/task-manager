@@ -7,39 +7,43 @@ import org.springframework.data.jpa.domain.Specification;
 
 import es.damarur.task.manager.model.TaskEntity;
 
-public class TaskEntitySpects {
+public class TaskEntitySpecifications {
 
-	private TaskEntitySpects() {
+	private static final String START_DATE = "startDate";
+	private static final String TARGET_DATE = "targetDate";
+	private static final String FINISH_DATE = "finishDate";
+
+	private TaskEntitySpecifications() {
 	}
 
 	public static Specification<TaskEntity> startDateGreaterThan(Date startDate) {
 		return (root, query, builder) -> startDate == null ? builder.conjunction()
-				: builder.greaterThanOrEqualTo(root.get("startDate"), startDate);
+				: builder.greaterThanOrEqualTo(root.get(START_DATE), startDate);
 	}
 
 	public static Specification<TaskEntity> targetDateGreaterThan(Date targetDate) {
 		return (root, query, builder) -> targetDate == null ? builder.conjunction()
-				: builder.greaterThanOrEqualTo(root.get("targetDate"), targetDate);
+				: builder.greaterThanOrEqualTo(root.get(TARGET_DATE), targetDate);
 	}
 
 	public static Specification<TaskEntity> finishDateGreaterThan(Date finishDate) {
 		return (root, query, builder) -> finishDate == null ? builder.conjunction()
-				: builder.greaterThanOrEqualTo(root.get("startDate"), finishDate);
+				: builder.greaterThanOrEqualTo(root.get(FINISH_DATE), finishDate);
 	}
 
 	public static Specification<TaskEntity> startDateLessThan(Date startDate) {
 		return (root, query, builder) -> startDate == null ? builder.conjunction()
-				: builder.lessThanOrEqualTo(root.get("startDate"), startDate);
+				: builder.lessThanOrEqualTo(root.get(START_DATE), startDate);
 	}
 
 	public static Specification<TaskEntity> targetDateLessThan(Date targetDate) {
 		return (root, query, builder) -> targetDate == null ? builder.conjunction()
-				: builder.lessThanOrEqualTo(root.get("targetDate"), targetDate);
+				: builder.lessThanOrEqualTo(root.get(TARGET_DATE), targetDate);
 	}
 
 	public static Specification<TaskEntity> finishDateLessThan(Date finishDate) {
 		return (root, query, builder) -> finishDate == null ? builder.conjunction()
-				: builder.lessThanOrEqualTo(root.get("startDate"), finishDate);
+				: builder.lessThanOrEqualTo(root.get(FINISH_DATE), finishDate);
 	}
 
 	public static Specification<TaskEntity> finishedEquals(Boolean finished) {

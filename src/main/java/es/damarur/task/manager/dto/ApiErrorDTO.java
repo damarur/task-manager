@@ -10,16 +10,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(value = { "timestamp", "status", "message" })
 public class ApiErrorDTO {
 
-	/** The timestamp. */
 	private String timestamp;
-
-	/** The status. */
 	private HttpStatus status;
-
-	/** The message. */
 	private String message;
-	
-	/** The code. */
 	private String code;
 
 	public ApiErrorDTO() {

@@ -9,8 +9,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -31,16 +29,18 @@ import es.damarur.task.manager.util.TMConstant;
 @Validated
 public class TaskManagerApiController implements TaskManagerApi {
 
-	private static final SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
+	private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
-	@Autowired
-	@Qualifier("taskManagerService")
-	private TaskManagerService service;
+	private TaskManagerService taskManagerService;
+
+	public TaskManagerApiController(TaskManagerService taskManagerService) {
+		this.taskManagerService = taskManagerService;
+	}
 
 	@Override
 	public ResponseEntity<TaskDTO> addTask(@Valid @RequestBody TaskDTO task) {
 		if (task.getId() == null) {
-			TaskDTO createdTask = service.createTask(task);
+			TaskDTO createdTask = taskManagerService.createTask(task);
 			return new ResponseEntity<>(createdTask, HttpStatus.OK);
 		} else {
 			throw new IllegalStateException(TMConstant.TASK_CREATE_NOT_ID);
@@ -49,13 +49,13 @@ public class TaskManagerApiController implements TaskManagerApi {
 
 	@Override
 	public ResponseEntity<Void> deleteTask(@PathVariable("id") Integer id) throws TaskNotFoundException {
-		service.deleteTask(id);
+		taskManagerService.deleteTask(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<Void> finishTask(@PathVariable("id") Integer id) throws BusinessException {
-		service.finishTask(id);
+		taskManagerService.finishTask(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
@@ -70,19 +70,19 @@ public class TaskManagerApiController implements TaskManagerApi {
 		Pageable pageRequest = PageRequest.of(page - 1, size);
 		Date from = null;
 		if (StringUtils.isNotBlank(fromDate)) {
-			from = SDF.parse(fromDate);
+			from = format.parse(fromDate);
 		}
 		Date to = null;
 		if (StringUtils.isNotBlank(toDate)) {
-			to = SDF.parse(toDate);
+			to = format.parse(toDate);
 		}
-		List<TaskDTO> results = service.searchTasks(query, finished, from, to, pageRequest);
+		List<TaskDTO> results = taskManagerService.searchTasks(query, finished, from, to, pageRequest);
 		return new ResponseEntity<>(results, HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<TaskDTO> updateTask(@Valid @RequestBody TaskDTO task) throws TaskNotFoundException {
-		TaskDTO updatedTask = service.updateTask(task);
+		TaskDTO updatedTask = taskManagerService.updateTask(task);
 		return new ResponseEntity<>(updatedTask, HttpStatus.OK);
 	}
 
